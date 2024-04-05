@@ -12,7 +12,9 @@
 plexDatabase="/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/"
 
 # Location to backup the directory to.
-backupDirectory="/mnt/nfs/temp/backups/plexmediaserver/database/"
+backupDirectory="/mnt/nfs/temp/backups/plexmediaserver/"
+
+excludeFile="$( dirname -- "$0"; )/plexRsyncExclude.txt"
 
 # Log file for script's output named with 
 # the script's name, date, and time of execution.
@@ -33,17 +35,17 @@ echo -e "------------------------------------------------------------\n" >> $log
 # Stop Plex
 echo -e "\n\nStopping Plex Media Server." >> $log 2>&1
 echo -e "------------------------------------------------------------\n" >> $log 2>&1
-sudo systemctl stop plexmediaserver.service  >> $log 2>&1
+sudo /usr/bin/systemctl stop plexmediaserver.service  >> $log 2>&1
 
 # Backup database
 echo -e "\n\nStarting Backup." >> $log 2>&1
 echo -e "------------------------------------------------------------\n" >> $log 2>&1
-sudo rsync -av --delete "$plexDatabase" "$backupDirectory" >> $log 2>&1
+sudo /usr/bin/rsync -av --delete --exclude-from="$excludeFile" "$plexDatabase" "$backupDirectory" >> $log 2>&1
 
 # Restart Plex
 echo -e "\n\nStarting Plex Media Server." >> $log 2>&1
 echo -e "------------------------------------------------------------\n" >> $log 2>&1
-sudo systemctl start plexmediaserver.service  >> $log 2>&1
+sudo /usr/bin/systemctl start plexmediaserver.service  >> $log 2>&1
 
 # Done
 echo -e "\n\nBackup Complete." >> $log 2>&1

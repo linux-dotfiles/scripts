@@ -12,7 +12,7 @@
 plexDatabase="/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/"
 
 # Location to backup the directory to.
-backupDirectory="/mnt/nfs/temp/backups/plexmediaserver/database/"
+backupDirectory="/mnt/nfs/temp/backups/plexmediaserver/"
 
 # Log file for script's output named with
 # the script's name, date, and time of execution.
@@ -33,22 +33,22 @@ echo -e "------------------------------------------------------------\n" >> $log
 # Stop Plex
 echo -e "\n\nStopping Plex Media Server." >> $log 2>&1
 echo -e "------------------------------------------------------------\n" >> $log 2>&1
-sudo systemctl stop plexmediaserver.service  >> $log 2>&1
+sudo /usr/bin/systemctl stop plexmediaserver.service  >> $log 2>&1
 
 # Restore database
 echo -e "\n\nStarting Database Restore." >> $log 2>&1
 echo -e "------------------------------------------------------------\n" >> $log 2>&1
-sudo rsync -av --delete --exclude="Logs/" --exclude="Crash Reports/" "$backupDirectory" "$plexDatabase" >> $LOG 2>&1
+sudo /usr/bin/rsync -av --delete --exclude="Logs/" --exclude="Crash Reports/" "$backupDirectory" "$plexDatabase" >> $LOG 2>&1
 
 # Update database permissions
 echo -e "\n\nUpdating Database Permissions." >> $log 2>&1
 echo -e "------------------------------------------------------------\n" >> $log 2>&1
-sudo chown -R plex:plex "/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/" >> $log 2>&1
+sudo /usr/bin/chown -R plex:plex "/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/" >> $log 2>&1
 
 # Restart Plex
 echo -e "\n\nStarting Plex Media Server." >> $log 2>&1
 echo -e "------------------------------------------------------------\n" >> $log 2>&1
-sudo systemctl start plexmediaserver.service  >> $log 2>&1
+sudo /usr/bin/systemctl start plexmediaserver.service  >> $log 2>&1
 
 # Done
 echo -e "\n\nRestore Complete." >> $log 2>&1
