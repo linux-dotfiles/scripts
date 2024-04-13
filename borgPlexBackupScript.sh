@@ -28,7 +28,7 @@ sudo /usr/bin/systemctl stop plexmediaserver.service  >> $log 2>&1
 # Backup the most important directories into an archive named after
 # the machine this script is currently running on:
 
-/usr/local/bin/borg create                            \
+/usr/local/bin/borg create             \
     --verbose                          \
     --filter AME                       \
     --list                             \
@@ -59,7 +59,7 @@ info "Pruning repository"
 # limit prune's operation to this machine's archives and not apply to
 # other machines' archives also:
 
-/usr/local/bin/borg prune                          \
+/usr/local/bin/borg prune           \
     --list                          \
     --glob-archives '{hostname}-*'  \
     --show-rc                       \
