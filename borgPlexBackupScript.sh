@@ -65,7 +65,7 @@ info "Pruning repository"
     --show-rc \
     --keep-daily 7 \
     --keep-weekly 4 \
-    --keep-monthly 6
+    --keep-monthly 6 >>$log 2>&1
 
 prune_exit=$?
 
@@ -73,7 +73,7 @@ prune_exit=$?
 
 info "Compacting repository"
 
-/usr/local/bin/borg compact
+/usr/local/bin/borg compact >>$log 2>&1
 
 compact_exit=$?
 
